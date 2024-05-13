@@ -1,6 +1,8 @@
 Para acceder a la documentacion, se puede acceder a la ruta:
 http://localhost:3000/api/docs
 
+Para correr la app ejecutar en consola: npm run start
+
 Para poder acceder a las rutas distintas a '/login',
 debe generarse el JWT a traves del login.
 Recibe por body un objecto como el siguiente:
