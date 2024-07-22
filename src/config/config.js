@@ -1,13 +1,19 @@
+const { password } = require('pg/lib/defaults');
+
 const Client = require('pg').Client;
 require('dotenv').config();
 
 const {
-    POSTGRES_URL
+    POSTGRES_USER,
+    POSTGRES_PASSWORD,
+    POSTGRES_DATABASE_PORT
 } = process.env;
 
 
 const client = new Client({
-    connectionString: POSTGRES_URL,
+    user: POSTGRES_USER,
+    password: POSTGRES_PASSWORD,
+    port: POSTGRES_DATABASE_PORT
   })
    
 const connectDB = async () => {
