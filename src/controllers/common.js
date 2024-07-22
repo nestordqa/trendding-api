@@ -10,6 +10,8 @@ exports.login = async (req, res) => {
         `);
         if (!user || !user.rows || !user.rows.length) res.status(404).json({ error: 'Usuario no encontrado' });
         res.json(generateToken(user.rows));
+
+    // eslint-disable-next-line no-unused-vars
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });
     }

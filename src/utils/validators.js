@@ -12,6 +12,7 @@ const validateNumber = (numbers) => {
 
 //Para validar que la data sea un correo electronico
 const validateEmail = (email) => {
+    // eslint-disable-next-line
     const emailPattern = /^[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,}$/;
     return emailPattern.test(email);
 };

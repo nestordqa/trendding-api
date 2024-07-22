@@ -10,14 +10,14 @@ const options = {
         },
     },
     apis: ['src/routes/routes.js'],
-}
+};
 
 const swagerSpec = swaggerJSdocs(options);
-
+// eslint-disable-next-line no-unused-vars
 const swaggerDocs = (app, port)=> {
     app.use('/api/docs', swaggerUI.serve, swaggerUI.setup(swagerSpec));
 };
 
 module.exports = {
     swaggerDocs,
-}
+};

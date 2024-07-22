@@ -1,7 +1,7 @@
-const express = require('express')
+const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
-const { default: client, connectDB, queryDB } = require('./config/config');
+const { connectDB } = require('./config/config');
 const { swaggerDocs: V1swaggerDocs} = require('./routes/swagger');
 const router = require('./routes/routes');
 const app = express();

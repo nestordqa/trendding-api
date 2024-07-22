@@ -9,6 +9,7 @@ exports.getEmployees = async (req, res) => {
         `);
         if (!user || !user.rows || !user.rows.length) res.status(204).json({ error: 'No hay empleados en la base de datos' });
         res.json(user.rows);
+    // eslint-disable-next-line no-unused-vars
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });
     }
@@ -23,6 +24,8 @@ exports.getEmployeesByCedula = async (req, res) => {
         `);
         if (!user || !user.rows || !user.rows.length) res.status(204).json({ error: 'No existe el empleado en al base de datos' });
         res.json(user.rows);
+
+    // eslint-disable-next-line no-unused-vars    
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });
     }
@@ -57,6 +60,8 @@ exports.updateEmployee = async (req, res) => {
                 pho_usu = ${compare(pho_usu, req.body.pho_usu)}
             WHERE ced_usu = ${ced_usu};
         `;
+
+        // eslint-disable-next-line no-unused-vars
         const query = await queryDB(newQuery);
         res.json({
             message: 'Empleado modificado con exito!'
@@ -95,6 +100,7 @@ exports.updateEmployeeVacuna = async (req, res) => {
                 num_dos_vac_usu = ${num_dos_vac_usu}
             WHERE ced_usu = ${ced_usu};
         `;
+        // eslint-disable-next-line no-unused-vars
         const query = await queryDB(newQuery);
         res.json({
             message: 'Vacuna agregada con exito!'
@@ -117,11 +123,13 @@ exports.postEmployees = async (req, res) => {
         }        
         //Se setea en un principio por como 'default' la constrasena del usuario, la cual
         //el mismo podra cambiar luego
+        // eslint-disable-next-line no-unused-vars
         const user = await queryDB(`
         INSERT INTO users (role, ced_usu, nom_usu, ape_usu, ema_usu)
         VALUES 
         ('EMPLOYEE', ${ced_usu}, '${nom_usu}', '${ape_usu}', '${ema_usu}')`);
         res.json({ message: 'Empleado creado!' });
+    // eslint-disable-next-line no-unused-vars
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });
     }
@@ -138,6 +146,7 @@ exports.deleteEmployee = async (req, res) => {
         const newQuery = `
             DELETE FROM users WHERE ced_usu = ${ced_usu}
         `;
+        // eslint-disable-next-line no-unused-vars
         const query = await queryDB(newQuery);
         res.json({
             message: 'Empleado eliminado con exito!'

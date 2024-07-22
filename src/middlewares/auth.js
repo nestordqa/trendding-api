@@ -12,6 +12,7 @@ function verifyToken (req, res, next) {
             res.status(401).json({ error: 'Access denied' });
         }
         next();
+    // eslint-disable-next-line no-unused-vars
     } catch (error) {
         res.status(401).json({ error: 'Invalid token' });
     }
