@@ -1,9 +1,10 @@
 const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
-const { connectDB } = require('./config/config');
+// const { connectDB } = require('./config/config');
 const { swaggerDocs: V1swaggerDocs} = require('./routes/swagger');
 const router = require('./routes/routes');
+const { connectDB } = require('./config/models');
 const app = express();
 
 app.use(bodyParser.json());
@@ -25,6 +26,7 @@ app.get('/', async (request, response) => {
 app.listen(3001, async () => {
   try {
     await connectDB();
+    console.info('Postgres DB connected successfully');
   } catch (error) {
     console.error(error);
   }

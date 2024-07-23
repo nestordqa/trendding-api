@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const employee = require('../controllers/employee');
+const admins = require('../controllers/admin');
 const common = require('../controllers/common');
 const verifyToken = require('../middlewares/auth');
+
 
 // Rutas compartidas para ambos tipos de usuarios
 /**
@@ -43,11 +44,11 @@ router.get('/login', common.login);
 
 /**
  * @openapi
- * '/api/employees':
+ * '/api/admins':
  *  get:
  *     tags:
- *     - Employees
- *     summary: Retorna el listado de empleados
+ *     - Admins
+ *     summary: Retorna el listado de admins
  *     responses:
  *      201:
  *        description: Created
@@ -58,33 +59,53 @@ router.get('/login', common.login);
  *        description: Server Error
  */
 
-router.get('/employees', [verifyToken], employee.getEmployees);
+router.get('/admins', [verifyToken], admins.getAdmins);
+
+// Rutas compartidas para eliminar empleados
 
 /**
  * @openapi
- * '/api/employees/:ced_usu':
+ * '/api/admins_delete/:user_id':
+ *  delete:
+ *     tags:
+ *     - Admins
+ *     summary: Elimina un admin segun su id
+ *     responses:
+ *      201:
+ *        description: Updated
+ *      404:
+ *        description: Usuario no encontrado
+ *      500:
+ *        description: Server Error
+ */
+
+router.delete('/admins/:user_id', [verifyToken], admins.deleteAdmin);
+
+/**
+ * @openapi
+ * '/api/admins/:id':
  *  get:
  *     tags:
- *     - Employee by cedula
- *     summary: Retorna un empleado por nro de cedula
+ *     - Admins
+ *     summary: Retorna un admin por id
  *     responses:
  *      200:
  *        description: OK
  *      204:
- *        description: No hay empleado
+ *        description: No hay admin
  *      500:
  *        description: Server Error
  */
-router.get('/employees/:ced_usu', [verifyToken], employee.getEmployeesByCedula);
+router.get('/admins/:user_id', [verifyToken], admins.getAdminsById);
 
-// Rutas compatidas para crear usuarios
+// Rutas compatidas para crear admin
 /**
  * @openapi
- * '/api/employees':
+ * '/api/admins':
  *  get:
  *     tags:
- *     - Employees
- *     summary: Crea un empleado
+ *     - Admins
+ *     summary: Crea un admin
  *     requestBody:
  *      required: true
  *      content:
@@ -92,22 +113,19 @@ router.get('/employees/:ced_usu', [verifyToken], employee.getEmployeesByCedula);
  *           schema:
  *            type: object
  *            required:
- *              - ema_usu
- *              - nom_usu
- *              - ape_usu
- *              - ced_usu
+ *              - username
+ *              - password
+ *              - email
  *            properties:
- *              ema_usu:
+ *              username:
  *                type: string
- *                default: hansolo@human.com
- *              nom_usu:
+ *                default: trendding admin
+ *              password:
  *                type: string
- *                default: Han
- *              ape_usu:
+ *                default: 123456
+ *              email:
  *                type: string
- *                default: Solo
- *              ced_usu:
- *                type: number
+ *                default: admin@gmail.com
  *     responses:
  *      201:
  *        description: Created
@@ -117,15 +135,15 @@ router.get('/employees/:ced_usu', [verifyToken], employee.getEmployeesByCedula);
  *      500:
  *        description: Server Error
  */
-router.post('/employees', [verifyToken], employee.postEmployees);
+router.post('/admins', [verifyToken], admins.postAdmins);
 
 /**
  * @openapi
- * '/api/employees/:ced_usu':
+ * '/api/admins/:user_id':
  *  put:
  *     tags:
- *     - Employees
- *     summary: Actualiza empleado segun su nro de cedula
+ *     - Admins
+ *     summary: Actualiza el admin segun id
  *     requestBody:
  *      required: true
  *      content:
@@ -133,25 +151,19 @@ router.post('/employees', [verifyToken], employee.postEmployees);
  *           schema:
  *            type: object
  *            required:
- *              - ema_usu
- *              - nom_usu
- *              - ape_usu
- *              - ced_usu
- *              - pass_usu
- *              - add_usu
- *              - pho_usu
+ *              - username
+ *              - password
+ *              - email
  *            properties:
- *              ema_usu:
+ *              password:
  *                type: string
- *                default: hansolo@human.com
- *              nom_usu:
+ *                default: 123456
+ *              username:
  *                type: string
- *                default: Han
- *              ape_usu:
+ *                default: trendding
+ *              email:
  *                type: string
- *                default: Solo
- *              ced_usu:
- *                type: number
+ *                default: Solo@gmail.com
  *     responses:
  *      201:
  *        description: Updated
@@ -161,66 +173,7 @@ router.post('/employees', [verifyToken], employee.postEmployees);
  *        description: Server Error
  */
 // Rutas compatidas para actualizar usuarios
-router.put('/employees/:ced_usu', [verifyToken], employee.updateEmployee);
-
-/**
- * @openapi
- * '/api/employee_vacuna/:ced_usu':
- *  put:
- *     tags:
- *     - Employees
- *     summary: Actualiza estado de vacunacion del empleado segun su nro de cedula
- *     requestBody:
- *      required: true
- *      content:
- *        application/json:
- *           schema:
- *            type: object
- *            required:
- *              - vac_usu
- *              - vac_tip_usu
- *              - fec_vac_usu
- *              - num_dos_vac_usu
- *            properties:
- *              vac_usu:
- *                type: boolean
- *                default: false
- *              vac_tip_usu:
- *                type: string
- *                default: Sputnik, AstraZeneca, Pfizer y Jhonson&Jhonson
- *              fec_vac_usu:
- *                type: date
- *                default: null
- *              num_dos_vac_usu:
- *                type: SMALLINT
- *     responses:
- *      201:
- *        description: Updated
- *      404:
- *        description: Usuario no encontrado
- *      500:
- *        description: Server Error
- */
-router.put('/employee_vacuna/:ced_usu', [verifyToken], employee.updateEmployeeVacuna);
-
-// Rutas compartidas para eliminar empleados
-
-/**
- * @openapi
- * '/api/employee/:ced_usu':
- *  get:
- *     tags:
- *     - Employees
- *     summary: Elimina empleado segun su nro de cedula
- *     responses:
- *      201:
- *        description: Updated
- *      404:
- *        description: Usuario no encontrado
- *      500:
- *        description: Server Error
- */
-router.delete('/employee/:ced_usu', [verifyToken], employee.deleteEmployee);
+router.put('/admins/:user_id', [verifyToken], admins.updateAdmin);
 
 
 module.exports = router;
