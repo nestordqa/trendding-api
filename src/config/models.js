@@ -69,11 +69,10 @@ const Users = sequelize.define(
 );
 
 
-const connectDB = (async () => {
+const connectDB = async () => {
     await sequelize.authenticate();
     await sequelize.sync();
-
-})();
+};
 
 module.exports = {
     Users,
