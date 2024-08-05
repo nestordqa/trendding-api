@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const admins = require('../controllers/admin');
+const users = require('../controllers/users');
 const common = require('../controllers/common');
 const verifyToken = require('../middlewares/auth');
+const verifyUsersToken = require('../middlewares/authUsers');
 
 
 // Rutas compartidas para ambos tipos de usuarios
@@ -40,6 +42,7 @@ const verifyToken = require('../middlewares/auth');
  */
 router.get('/login', common.login);
 
+//RUTAS PARA ADMINS
 // Rutas compartidas para obtener usuarios
 
 /**
@@ -175,5 +178,138 @@ router.post('/admins', [verifyToken], admins.postAdmins);
 // Rutas compatidas para actualizar usuarios
 router.put('/admins/:user_id', [verifyToken], admins.updateAdmin);
 
+//RUTAS PARA USERS
+/**
+ * @openapi
+ * '/api/users':
+ *  get:
+ *     tags:
+ *     - Users
+ *     summary: Retorna el listado de USERS
+ *     responses:
+ *      201:
+ *        description: Created
+ *        string: JWT
+ *      404:
+ *        description: Usuarios no encontrados
+ *      500:
+ *        description: Server Error
+ */
+
+router.get('/users', [verifyUsersToken], users.getUsers);
+
+// Rutas compartidas para eliminar users
+
+/**
+ * @openapi
+ * '/api/users/:user_id':
+ *  delete:
+ *     tags:
+ *     - Users
+ *     summary: Elimina un user segun su id
+ *     responses:
+ *      201:
+ *        description: Updated
+ *      404:
+ *        description: Usuario no encontrado
+ *      500:
+ *        description: Server Error
+ */
+
+router.delete('/users/:user_id', [verifyUsersToken], users.deleteUser);
+
+/**
+ * @openapi
+ * '/api/users/:id':
+ *  get:
+ *     tags:
+ *     - Users
+ *     summary: Retorna un user por id
+ *     responses:
+ *      200:
+ *        description: OK
+ *      204:
+ *        description: No hay admin
+ *      500:
+ *        description: Server Error
+ */
+router.get('/users/:user_id', [verifyUsersToken], users.getUsersById);
+
+// Rutas compatidas para crear user
+/**
+ * @openapi
+ * '/api/users':
+ *  get:
+ *     tags:
+ *     - Users
+ *     summary: Crea un user
+ *     requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *           schema:
+ *            type: object
+ *            required:
+ *              - username
+ *              - password
+ *              - email
+ *            properties:
+ *              username:
+ *                type: string
+ *                default: trendding user
+ *              password:
+ *                type: string
+ *                default: 123456
+ *              email:
+ *                type: string
+ *                default: admin@gmail.com
+ *     responses:
+ *      201:
+ *        description: Created
+ *        string: JWT
+ *      404:
+ *        description: Usuario no encontrado
+ *      500:
+ *        description: Server Error
+ */
+router.post('/users', users.postUser);
+
+/**
+ * @openapi
+ * '/api/users/:user_id':
+ *  put:
+ *     tags:
+ *     - Users
+ *     summary: Actualiza el user segun id
+ *     requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *           schema:
+ *            type: object
+ *            required:
+ *              - username
+ *              - password
+ *              - email
+ *            properties:
+ *              password:
+ *                type: string
+ *                default: 123456
+ *              username:
+ *                type: string
+ *                default: trendding
+ *              email:
+ *                type: string
+ *                default: Solo@gmail.com
+ *     responses:
+ *      201:
+ *        description: Updated
+ *      404:
+ *        description: Usuario no encontrado
+ *      500:
+ *        description: Server Error
+ */
+// Rutas compatidas para actualizar usuarios
+router.put('/users/:user_id', [verifyUsersToken], users.updateUser);
 
 module.exports = router;

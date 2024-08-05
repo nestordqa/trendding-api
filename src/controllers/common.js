@@ -1,4 +1,4 @@
-const { Users } = require("../config/models");
+const { Users } = require("../config/models/Users");
 const { generateToken } = require("../utils/jwt");
 
 // Login method

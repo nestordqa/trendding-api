@@ -1,15 +1,17 @@
+const { Courses } = require("../config/models/Courses");
 const { Users } = require("../config/models/Users");
 
-// Get admins method
-exports.getAdmins = async (req, res) => {
+// Get Users method
+exports.getUsers = async (req, res) => {
     try {
         const user = await Users.findAll({
             where: {
-                role: 'ADMIN'
-            }
+                role: 'USER'
+            },
+            include: Courses
         });
         if (!user || !user.length) {
-            res.status(204).json({ error: 'No hay admins en la base de datos' });
+            res.status(204).json({ error: 'No hay users en la base de datos' });
             return;
         }
         res.json(user);
@@ -19,13 +21,17 @@ exports.getAdmins = async (req, res) => {
     }
 };
 
-// Get admin by id method
-exports.getAdminsById = async (req, res) => {
+// Get users by id method
+exports.getUsersById = async (req, res) => {
     try {
         const userId = req.params['user_id'];
         const users = await Users.findAll({
             where: {
-                id: userId
+                id: userId,
+                role: 'USER'
+            },
+            include: {
+                model: Courses
             }
         });
         if (!users || !users.length) {
@@ -40,8 +46,8 @@ exports.getAdminsById = async (req, res) => {
     }
 };
 
-// Update admin info general
-exports.updateAdmin = async (req, res) => {
+// Update user info general
+exports.updateUser = async (req, res) => {
     try {
         const userId = req.params['user_id'];
         const body = req.body;
@@ -49,7 +55,8 @@ exports.updateAdmin = async (req, res) => {
             body,
             {
                 where: {
-                    id: userId
+                    id: userId,
+                    role: 'USER'
                 }
             }
         );
@@ -63,8 +70,8 @@ exports.updateAdmin = async (req, res) => {
     }
 };
 
-// Post admins
-exports.postAdmins = async (req, res) => {
+// Post user
+exports.postUser = async (req, res) => {
     try {
         const { 
             firstName,
@@ -79,10 +86,10 @@ exports.postAdmins = async (req, res) => {
             username,
             email,
             password,
-            role: 'ADMIN'
+            role: 'USER'
         });
         res.json({ 
-            message: 'Admin creado!',
+            message: 'User creado!',
             new_admin: user
         });
     } catch (error) {
@@ -94,17 +101,18 @@ exports.postAdmins = async (req, res) => {
     }
 };
 
-//Delete employees logically
-exports.deleteAdmin = async (req, res) => {
+//Delete user logically
+exports.deleteUser = async (req, res) => {
     try {
         const userId = req.params['user_id'];
         const userDeleted = Users.destroy({
             where: {
-                id: userId
+                id: userId,
+                role: 'USER'
             }
         });
         res.json({
-            message: 'Admin eliminado con exito!',
+            message: 'User eliminado con exito!',
             new_data: userDeleted
         });
     } catch (error) {
