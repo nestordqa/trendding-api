@@ -29,7 +29,7 @@ app.listen(3001, async () => {
   try {
       await sequelize.authenticate();
       await sequelize.sync({
-        force: true
+        force: false
       });
     console.info('Postgres DB connected successfully');
   } catch (error) {

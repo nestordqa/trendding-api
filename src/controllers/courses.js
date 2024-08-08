@@ -1,15 +1,27 @@
+const { Categories } = require("../config/models/Categories");
 const { Courses } = require("../config/models/Courses");
 const { Lections } = require("../config/models/Lections");
+const { Tags } = require("../config/models/Tags");
 
 
 // Get Courses method
 exports.getCourses = async (req, res) => {
     try {
         const course = await Courses.findAll({
-            include: {
-                model: Lections,
-                as: 'lecciones'
-            }
+            include: [
+                {
+                    model: Lections,
+                    as: 'lecciones'
+                },
+                {
+                    model: Tags,
+                    as: 'tags'
+                },
+                {
+                    model: Categories,
+                    as: 'categories'
+                },
+            ]
         });
         if (!course || !course.length) {
             res.status(204).json({ error: 'No hay curses en la base de datos' });
@@ -30,10 +42,20 @@ exports.getCoursesById = async (req, res) => {
             where: {
                 id: courseId,
             },
-            include: {
-                model: Lections,
-                as: 'lecciones'
-            }
+            include: [
+                {
+                    model: Lections,
+                    as: 'lecciones'
+                },
+                {
+                    model: Tags,
+                    as: 'tags'
+                },
+                {
+                    model: Categories,
+                    as: 'categories'
+                },
+            ]
         });
         if (!course || !course.length) {
             res.status(204).json({ error: 'No existe el empleado en al base de datos' });
