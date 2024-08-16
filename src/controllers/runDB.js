@@ -1,6 +1,7 @@
 const { Users } = require("../config/models/Users");
 const { Courses } = require("../config/models/Courses");
 const { Lections } = require("../config/models/Lections");
+const { Categories } = require("../config/models/Categories");
 
 const users = [
     {
@@ -63,7 +64,7 @@ const courses = [
         description: 'Hola soy un cursito',
         date: date.getDate(),
         test: true,
-        certificado: true
+        certificado: true,
     },
     {
         name: 'FOREX',
@@ -71,7 +72,7 @@ const courses = [
         description: 'Hola soy un cursito',
         date: date.getDate(),
         test: true,
-        certificado: true
+        certificado: true,
     },
     {
         name: 'TRADINGCITO',
@@ -79,7 +80,7 @@ const courses = [
         description: 'Hola soy un cursito',
         date: date.getDate(),
         test: true,
-        certificado: true
+        certificado: true,
     }
 ];
 
@@ -110,7 +111,28 @@ const lecciones = [
     }
 ];
 
+const categories = [
+    {
+        name: 'Holis'
+    },
+    {
+        name: 'Holisa'
+    },
+    {
+        name: 'Holise'
+    }
+];
+
 exports.runDb = async (req, res) => {
+    const categoriesCreated = categories.map(async (item) => {
+        try {
+            const categories = await Categories.create(item);
+            return categories;
+        } catch (error) {
+            console.error(error);
+        }
+    });
+
     const usersCreated = users.map(async (item) => {
         try {
             return await Users.create(item);
@@ -133,6 +155,7 @@ exports.runDb = async (req, res) => {
                 courseId: course.dataValues.id
             });
             console.log(course.dataValues.id);
+            return course;
         } catch (error) {
             console.error(error);
         }
@@ -141,6 +164,7 @@ exports.runDb = async (req, res) => {
     res.status(200).json({
         users: usersCreated,
         admins: adminCreated,
-        courses: coursesCreated
+        courses: coursesCreated,
+        categories: categoriesCreated
     });
 };

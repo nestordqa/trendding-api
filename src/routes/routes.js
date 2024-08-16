@@ -3,6 +3,7 @@ const router = express.Router();
 const admins = require('../controllers/admin');
 const lections = require('../controllers/lections');
 const users = require('../controllers/users');
+const categories = require('../controllers/categories');
 const courses = require('../controllers/courses');
 const common = require('../controllers/common');
 const run = require('../controllers/runDB');
@@ -43,7 +44,7 @@ router.post('/rundb', run.runDb);
  *      500:
  *        description: Server Error
  */
-router.get('/login', common.login);
+router.post('/login', common.login);
 
 //RUTAS PARA ADMINS
 // Rutas compartidas para obtener usuarios
@@ -551,5 +552,8 @@ router.post('/lections/:course_id', lections.postLection);
  *        description: Server Error
  */
 router.put('/lections/:lection_id', [verifyUsersToken], lections.updateLection);
+
+router.get('/categories', [verifyUsersToken], categories.getCategories);
+router.post('/categories', [verifyUsersToken], categories.postCategorie);
 
 module.exports = router;

@@ -1,8 +1,6 @@
 const { Categories } = require("../config/models/Categories");
 const { Courses } = require("../config/models/Courses");
 const { Lections } = require("../config/models/Lections");
-const { Tags } = require("../config/models/Tags");
-
 
 // Get Courses method
 exports.getCourses = async (req, res) => {
@@ -12,10 +10,6 @@ exports.getCourses = async (req, res) => {
                 {
                     model: Lections,
                     as: 'lecciones'
-                },
-                {
-                    model: Tags,
-                    as: 'tags'
                 },
                 {
                     model: Categories,
@@ -46,10 +40,6 @@ exports.getCoursesById = async (req, res) => {
                 {
                     model: Lections,
                     as: 'lecciones'
-                },
-                {
-                    model: Tags,
-                    as: 'tags'
                 },
                 {
                     model: Categories,
