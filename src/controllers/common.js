@@ -11,7 +11,7 @@ exports.login = async (req, res) => {
                 password
             }
         });
-        if (!user || !user.length) res.status(404).json({ error: 'Usuario no encontrado' });
+        if (!user || !user.length) return res.status(404).json({ error: 'Usuario no encontrado' });
         res.json(generateToken(user));
 
     // eslint-disable-next-line no-unused-vars

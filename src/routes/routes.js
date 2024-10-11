@@ -5,6 +5,9 @@ const lections = require('../controllers/lections');
 const users = require('../controllers/users');
 const categories = require('../controllers/categories');
 const courses = require('../controllers/courses');
+const teachers = require('../controllers/teachers');
+const images = require('../controllers/images');
+const videos = require('../controllers/videos');
 const common = require('../controllers/common');
 const run = require('../controllers/runDB');
 const verifyToken = require('../middlewares/auth');
@@ -514,7 +517,8 @@ router.get('/lections/:course_id', [verifyUsersToken], lections.getLectionsById)
  *      500:
  *        description: Server Error
  */
-router.post('/lections/:course_id', lections.postLection);
+router.post('/lections', [verifyUsersToken], lections.postLection);
+router.get('/lections', [verifyUsersToken], lections.getLections);
 
 /**
  * @openapi
@@ -555,5 +559,29 @@ router.put('/lections/:lection_id', [verifyUsersToken], lections.updateLection);
 
 router.get('/categories', [verifyUsersToken], categories.getCategories);
 router.post('/categories', [verifyUsersToken], categories.postCategorie);
+router.delete('/categories/:categorie_id', [verifyUsersToken], categories.deleteCategorie);
+
+router.get('/teachers', [verifyUsersToken], teachers.getTeachers);
+router.post('/teachers', [verifyUsersToken], teachers.postTeacher);
+router.delete('/teachers/:teacher_id', [verifyUsersToken], teachers.deleteTeacher);
+router.get('/teachers/:teacher_id', [verifyUsersToken], teachers.getTeachersById);
+
+
+//IMAGENES
+router.get('/images/courses/:course_id', [verifyUsersToken], images.getCourseImage);
+router.post('/images/courses/', [verifyUsersToken], images.postCourseImage);
+
+router.get('/images/lections/:lection_id', [verifyUsersToken], images.getLectionImage);
+router.post('/images/lections/', [verifyUsersToken], images.postLectionImage);
+
+router.get('/images/teachers/:teacher_id', [verifyUsersToken], images.getTeacherImage);
+router.post('/images/teachers/', [verifyUsersToken], images.postTeacherImage);
+
+//VIDEOS
+router.get('/videos/courses/:course_id', [verifyUsersToken], videos.getCourseVideo);
+router.post('/videos/courses/', [verifyUsersToken], videos.postCourseVideo);
+
+router.get('/videos/lections/:lection_id', [verifyUsersToken], videos.getLectionVideo);
+router.post('/videos/lections/', [verifyUsersToken], videos.postLectionVideo);
 
 module.exports = router;

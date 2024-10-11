@@ -10,18 +10,25 @@ const Lections = sequelize.define(
             type: DataTypes.STRING,
             allowNull: false
         },
-        modalidad: {
-            type: DataTypes.ENUM,
-            values: ['VIDEOS', 'FILES'],
+        test: {
+            type: DataTypes.BOOLEAN,
             allowNull: false,
         },
         description: {
             type: DataTypes.STRING,
             allowNull: false
         },
-        tipo: {
-            type: DataTypes.BOOLEAN,
-            allowNull: false
+        // tipo: {
+        //     type: DataTypes.BOOLEAN,
+        //     allowNull: false
+        // },
+        hour: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        hours: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
         },
         active: {
             type: DataTypes.BOOLEAN,

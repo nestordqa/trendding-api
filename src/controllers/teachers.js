@@ -2,29 +2,25 @@ const { Categories } = require("../config/models/Categories");
 const { Courses } = require("../config/models/Courses");
 const { Images } = require("../config/models/Images");
 const { Lections } = require("../config/models/Lections");
-const { Users } = require("../config/models/Users");
-const { Videos } = require("../config/models/Videos");
+const { Teachers } = require("../config/models/Teachers");
+
 
 // Get Courses method
-exports.getCourses = async (req, res) => {
+exports.getTeachers = async (req, res) => {
     try {
-        const course = await Courses.findAll({
+        const course = await Teachers.findAll({
             include: [
-                {
-                    model: Videos,
-                    as: 'videos'
-                },
-                {
-                    model: Users,
-                    as: 'users'
-                },
                 {
                     model: Images,
                     as: 'images'
                 },
                 {
+                    model: Courses,
+                    as: 'course'
+                },
+                {
                     model: Lections,
-                    as: 'lecciones'
+                    as: 'lection'
                 },
                 {
                     model: Categories,
@@ -33,7 +29,7 @@ exports.getCourses = async (req, res) => {
             ]
         });
         if (!course || !course.length) {
-            res.status(204).json({ error: 'No hay curses en la base de datos' });
+            res.status(204).json({ error: 'No hay teachers en la base de datos' });
             return;
         }
         res.json(course);
@@ -45,29 +41,25 @@ exports.getCourses = async (req, res) => {
 };
 
 // Get Courses by id method
-exports.getCoursesById = async (req, res) => {
+exports.getTeachersById = async (req, res) => {
     try {
-        const courseId = req.params['course_id'];
-        const course = await Courses.findAll({
+        const courseId = req.params['teacher_id'];
+        const course = await Teachers.findAll({
             where: {
                 id: courseId,
             },
             include: [
                 {
-                    model: Videos,
-                    as: 'videos'
-                },
-                {
                     model: Images,
                     as: 'images'
                 },
                 {
-                    model: Users,
-                    as: 'users'
+                    model: Courses,
+                    as: 'course'
                 },
                 {
                     model: Lections,
-                    as: 'lecciones'
+                    as: 'leccion'
                 },
                 {
                     model: Categories,
@@ -89,11 +81,11 @@ exports.getCoursesById = async (req, res) => {
 };
 
 // Update course info general
-exports.updateCourse = async (req, res) => {
+exports.updateTeacher = async (req, res) => {
     try {
-        const courseId = req.params['course_id'];
+        const courseId = req.params['teacher_id'];
         const body = req.body;
-        const user = await Courses.update(
+        const user = await Teachers.update(
             body,
             {
                 where: {
@@ -112,37 +104,27 @@ exports.updateCourse = async (req, res) => {
 };
 
 // Post course
-exports.postCourse = async (req, res) => {
+exports.postTeacher = async (req, res) => {
     try {
         const { 
             name,
-            modalidad,
             description,
-            date,
-            test,
-            certificado,
-            categoriesId,
-            hour,
-            hours,
-            lectionsNumber,
-            students,
             active,
-            teacherId
+            phone,
+            document,
+            email,
+            especialidad,
+            categoriesId
         } = req.body;
-        const course = await Courses.create({
+        const course = await Teachers.create({
             name,
-            modalidad,
             description,
-            date,
-            test,
-            certificado,
-            categoriesId,
-            hour,
-            hours,
-            lectionsNumber,
-            students,
             active,
-            teacherId
+            phone,
+            document,
+            email,
+            especialidad,
+            categoriesId
         });
         res.json({ 
             message: 'course creado!',
@@ -159,10 +141,10 @@ exports.postCourse = async (req, res) => {
 };
 
 //Delete course logically
-exports.deleteCourse = async (req, res) => {
+exports.deleteTeacher = async (req, res) => {
     try {
-        const courseId = req.params['course_id'];
-        const courseDeleted = await Courses.update(
+        const courseId = req.params['teacher_id'];
+        const courseDeleted = await Teachers.update(
             {
                 active: false
             },
