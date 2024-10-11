@@ -3,11 +3,11 @@ const cors = require('cors');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 // const { connectDB } = require('./config/config');
-const { swaggerDocs: V1swaggerDocs} = require('./routes/swagger');
-const router = require('./routes/routes');
-const { sequelize } = require('./config/db');
+const { swaggerDocs: V1swaggerDocs} = require('./src/routes/swagger');
+const router = require('./src/routes/routes');
+const { sequelize } = require('./src/config/db');
 // const executeAsociations = require('./config/asociations');
-require('./config/asociations');
+require('./src/config/asociations');
 const app = express();
 
 app.use(cors());
